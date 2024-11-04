@@ -1,4 +1,15 @@
+import { useEffect, useState } from "react";
+
 export default function App() {
+  const [content, setContent] = useState("");
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const newContent = await fetch("./products.json");
+      const data = await response.json();
+      setProducts(data);
+    })(); 
+  }, []);
   return (
     <>
       <header>
@@ -9,11 +20,18 @@ export default function App() {
           <form>
             <div>
               <label htmlFor="category">Choose a category:</label>
-              <select id="category">
-                <option>All</option>
-                <option>Vegetables</option>
-                <option>Meat</option>
-                <option>Soup</option>
+              <select 
+                id="category"
+                onChange={async (event) => {
+                  const selectedValue = event.target.value;
+                  const newContent = await fetchVerse(selectedValue);
+                  setContent(newContent);
+                }}
+              >
+                <option value="All">All</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Meat">Meat</option>
+                <option value="soup">Soup</option>
               </select>
             </div>
             <div>
@@ -25,7 +43,13 @@ export default function App() {
             </div>
           </form>
         </aside>
-        <main></main>
+        <main>
+        <section class="vegetables">
+          <h2>Baked beans</h2>
+          <p>$0.40</p>
+          <img src="./images/beans.jpg" alt="baked beans"/>
+        </section>
+        </main>
       </div>
       <footer>
         <p>All icons found at the Noun Project:</p>
